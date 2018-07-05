@@ -1,0 +1,43 @@
+setwd("C:/Users/italo/OneDrive/Doutorado/1º período_junho/CAP-394 - Introdução à Data Science/Aula 1")
+
+library(readr)
+defpatterns_missing <- read_csv("C:/Users/italo/Desktop/defpatterns.missing.csv")
+View(defpatterns_missing)
+
+# 1. How	many	different	values	there	are	for	the	column	“padrao”?
+col_padrao = which(names(defpatterns_missing)=="padrao")
+padrao = defpatterns_missing[,col_padrao]
+resultado_padrao = unique(padrao)
+
+# 2. What	is	the	minimum	value	for	a	given	column,	e.g. “c_PSMetric”?	
+col_psmetric = which(names(defpatterns_missing)=="c_PSMetric")
+psmetric = defpatterns_missing[,col_psmetric]
+## resultado_psmetric = min(psmetric), sem excluir os NA
+resultado_psmetric = min(psmetric,na.rm =TRUE)
+
+# 3. What	is	the	minimum	non-zero	value	for	a	given	column,	e.g. “c_PSMetric”?
+#psmetric_vector = as.vector(t(psmetric))
+psmetric_vector = as.matrix(psmetric)
+resultado_psmetric2 = min(psmetric_vector[psmetric_vector>0],na.rm=TRUE)
+
+# 4. How	many	values	are	missing	from	each	column?
+qtd_NA_coluna = sapply(defpatterns_missing, function(x) sum(is.na(x)))
+qtd_NA_total = sum(is.na(defpatterns_missing))
+
+# 5. How	many	observations	are	complete,	i.e.	there	is	no	missing	value	for	its	variables? Observações são as linhas
+obs_wo_NA <- na.omit(defpatterns_missing)
+tamanho_obs_wo_NA = dim(obs_wo_NA)[1]
+
+# 6. How	many	complete	observations	there are	for	each	different	value	of “padrao”?
+acumulador = vector()
+
+obs_wo_NA_df = as.data.frame(obs_wo_NA)
+i = 1
+for (i in 1:dim(resultado_padrao)[1])
+     {
+      linhas = as.vector(t(resultado_padrao[i,]))
+      resultado = length(which(obs_wo_NA_df$padrao==linhas))
+      acumulador = rbind(acumulador,resultado)
+}
+
+observations_complete=cbind(resultado_padrao,acumulador)
