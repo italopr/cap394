@@ -1,0 +1,176 @@
+## Exercício 1
+
+#1.a
+#Fix	the	part	of	the	code	that	shows	the	cold	months	in	Baltimore	(03-PrimitiveTypes)	so	we	know	which	are	those	months.
+#Obs.: Em 03-PrimitiveTypes, eu não encontrei nenhum dado.
+
+min_temp_baltimore <- c(23.5,26.1,33.6,42.0,51.8,60.8,65.8,63.9,56.6,43.7,34.7,27.3)
+max_temp_baltimore <- c(41.2,44.8,53.9,64.5,73.9,82.7,87.2,85.1,78.2,67.0,56.3,46.0)
+months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+baltimore_temps <- data.frame(Min=min_temp_baltimore,Max=max_temp_baltimore,row.names = months)
+baltimore_temps
+
+#Convertando de °F para °C
+min_temp_baltimore_C <- (min_temp_baltimore-32)/1.8
+max_temp_baltimore_C <- (max_temp_baltimore-32)/1.8
+media_temp_baltimore_C <- (min_temp_baltimore_C+max_temp_baltimore_C)/2
+baltimore_temps_C <- data.frame(Min=min_temp_baltimore_C,Max=max_temp_baltimore_C,Med=media_temp_baltimore_C,row.names = months)
+
+#Os meses cuja média de temperatura for < 10 °C será COnsiderando frio
+cold_month <- subset(baltimore_temps_C,baltimore_temps_C$Med<10)
+
+print(paste0("Os meses mais frios foram: ",row.names(cold_month)))
+a = row.names(cold_month)
+b <- (cold_month$Med)
+
+sprintf("Meses com temperatura < 10ºC: %s ,%f",a,b)
+      
+#1.b
+#What	would	happen	if	we	still	had	a	NA on	the	vector	for	the	temperatures	in	SJC? (06-Factors)? -Eu não conseguiria classificar a informação. E,
+#se por ventura, eu eliminasse a linha, perderia o mês.
+avgTempSJC <- c(22.2,22.4,21.6,19.6,17,16.1,15.6,17.1,18.8,19.4,20.3,21.4)
+names(avgTempSJC) <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+descTempSJC <- vector(length = length(avgTempSJC))
+descTempSJC[avgTempSJC>20] <- 'Hot' 
+descTempSJC[avgTempSJC<18] <- 'Cool' 
+descTempSJC
+descTempSJC[(avgTempSJC >= 18) & (avgTempSJC <= 20)] <- 'Mild'
+descTempSJC
+descTempSJC <- factor(descTempSJC)
+descTempSJC
+class(descTempSJC)
+
+avgTempSJC <- c(22.2,22.4,NA,19.6,17,16.1,15.6,17.1,18.8,19.4,20.3,21.4)
+names(avgTempSJC) <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+descTempSJC <- vector(length = length(avgTempSJC))
+descTempSJC[avgTempSJC>20] <- 'Hot' 
+descTempSJC[avgTempSJC<18] <- 'Cool' 
+descTempSJC
+descTempSJC[(avgTempSJC >= 18) & (avgTempSJC <= 20)] <- 'Mild'
+descTempSJC
+descTempSJC <- factor(descTempSJC)
+descTempSJC
+class(descTempSJC)
+mean(descTempSJC) #Não consigo calcular a média, por exemplo.
+
+#1.c
+#What	happens	if	we	try	to	run	sjcTemps["Jan":"Jul",c(1,3)]?	Why?	(see	07- DataFrames). - O comando não funciona, porque o range não entende
+# que o uso de string gera uma sequência.
+
+maxTempSJC <- c(29.7,30.1,29.5,27.3,25.1,24.3,24.1,26.2,27.2,27.3,28,28.7)
+avgTempSJC <- c(22.2,22.4,21.6,19.6,17,16.1,15.6,17.1,18.8,19.4,20.3,21.4)
+minTempSJC <- c(16.2,16.5,15.7,13.2,10.1,8.9,8.2,9.9,11.9,13.4,14.2,15.3)
+months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+sjcTemps <- data.frame(Max=maxTempSJC,Avg=avgTempSJC,Min=minTempSJC,row.names = months)
+sjcTemps
+class(sjcTemps)
+
+sjcTemps2 <- data.frame(Max=numeric(),Avg=numeric(),Min=numeric())
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=29.7,Avg=22.2,Min=16.2))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=30.1,Avg=22.4,Min=16.5))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=29.5,Avg=21.6,Min=15.7))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=27.3,Avg=19.6,Min=13.2))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=25.1,Avg=17,  Min=10.1))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=24.3,Avg=16.1,Min= 8.9))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=24.1,Avg=15.6,Min= 8.2))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=26.2,Avg=17.1,Min= 9.9))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=27.2,Avg=18.8,Min=11.9))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=27.3,Avg=19.4,Min=13.4))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=28,  Avg=20.3,Min=14.2))
+sjcTemps2 <- rbind(sjcTemps2,data.frame(Max=28.7,Avg=21.4,Min=15.3))
+row.names(sjcTemps2) <- months
+sjcTemps2
+class(sjcTemps2)
+
+nrow(sjcTemps)
+ncol(sjcTemps)
+head(sjcTemps)
+str(sjcTemps)
+summary(sjcTemps)
+sjcTemps$Min
+sjcTemps$Max
+sjcTemps$Min[2]
+sjcTemps$Max[2]
+sjcTemps[,2]
+sjcTemps[2,]
+sjcTemps["Jul",]
+sjcTemps["Jul","Min"]
+sjcTemps[1:6,c(1,3)]
+sjcTemps["Jul",2:3]
+sjcTemps[c("Jan","Jul"),c("Max","Min")]
+
+
+sjcTemps["Jan":"Jul",c(1,3)] #não funciona
+sjcTemps[1:7,c(1,3)] #solução
+sjcTemps[c("Jan":"Jul"),c(1,3)]
+
+#1.d
+#We	can	change	Data	Frames	with	sjcTemps3["Aug",] <- c(1,2,3) and	 sjcTemps3["Jul",] <- sjcTemps3["Jul",]+c(3,4) but	we	cannot	change	
+#with	sjcTemps3["Jul",] <- c(3,4).	Why?	(07-DataFrames). - Porque a quantidade de termos deve ser a mesma que a quantidade de colunas da linha
+#expressa por "JUL"
+
+sjcTemps3 <- sjcTemps
+sjcTemps3["Aug",] <- c(1,2,3)
+sjcTemps3["Jul",] <- sjcTemps3["Jul",]+c(3,4)
+sjcTemps3["Jul",] <- c(3,4)
+
+#1.e
+#Run	some	examples	that	show	that	the	recycling	rule	reuses	the	smaller	(shorter)	vector
+
+#1.f
+#What	does	stringsAsFactors=FALSE in	read.csv() do?	Why	do	we	need	it?	(see	07-DataFrames). 
+#- Transforma o tipo de dado da coluna em chr, caso contrário a coluna fica com dado do tipo factor.
+taubateWeather <- read.csv(file="C:/Users//italo/OneDrive/Doutorado/1º período_junho/CAP-394 - Introdução à Data Science/Taubate.csv", header=TRUE, sep=",", stringsAsFactors=FALSE)
+taubateWeather
+
+taubateWeather2 <- read.csv(file="C:/Users//italo/OneDrive/Doutorado/1º período_junho/CAP-394 - Introdução à Data Science/Taubate.csv", header=TRUE, sep=",")
+taubateWeather2
+
+
+colnames(taubateWeather2)[1] <- "Month"
+colnames(taubateWeather)[1] <- "Month"
+
+
+taubateWeather2$Month[[1]]<-"Janeiro"
+taubateWeather$Month[[1]]<-"Janeiro"
+
+str(taubateWeather)
+str(taubateWeather2)
+
+#Exercício 2
+
+precip_baltimore_inches <- c(3.47,3.02,3.93,3.00,3.89,3.43,3.85,3.74,3.98,3.16,3.12,3.35)
+months <- c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+
+precip_baltimore <- data.frame(inches=precip_baltimore_inches)
+precip_baltimore_mm <- precip_baltimore_inches*25.4
+
+precip_baltimore$mm <-c(precip_baltimore_mm)
+min(precip_baltimore$mm)
+max(precip_baltimore$mm)
+mean(precip_baltimore$mm)
+
+
+#Exercício 3
+vendors <- "https://data.baltimorecity.gov/api/views/bqw3-z52q/rows.csv?accessType=DOWNLOAD"
+download.file(vendors,destfile = "TempData/BFood.csv",method="curl")
+if (file.exists("TempData/BFood.csv"))
+{
+  tam <- file.info("TempData/BFood.csv")$size
+  paste("File downloaded, ",tam," bytes")
+} else
+{
+  "Error downloading file!"
+}
+
+
+bVendors <- read.csv(file="C:/Users//italo/OneDrive/Doutorado/1º período_junho/CAP-394 - Introdução à Data Science//BFood.csv", header=TRUE, sep=",", stringsAsFactors=FALSE)
+str(bVendors)
+bVendors$hotdog <- grepl("Hot dog|HOt dogs",ignore.case=TRUE,bVendors$ItemsSold)
+TESTE<-head(subset(bVendors, select = c(ItemsSold,hotdog)))
+
+
+bVendors$pizza <- grepl("pizza|pizzas",ignore.case=TRUE,bVendors$ItemsSold)
+
+bVendors$town <- sub("\n.*","",bVendors$Location.1)
+bVendors$town2 <- sub("\\s.*","",bVendors$town)
